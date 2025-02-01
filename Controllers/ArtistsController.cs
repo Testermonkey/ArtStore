@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ArtStore.Controllers
 {
-    public class ArtistController : Controller
+    public class ArtistsController : Controller
     {
         private readonly AppDbContext _context;
 
-        public ArtistController(AppDbContext context)
+        public ArtistsController(AppDbContext context)
         {
             _context = context;
         }
@@ -19,7 +19,7 @@ namespace ArtStore.Controllers
         public IActionResult Index()
         {
             var data = _context.Artists.ToList();
-            return View();
+            return View(data);
         }
     }
 }

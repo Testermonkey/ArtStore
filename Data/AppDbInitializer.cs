@@ -50,12 +50,12 @@ public class AppDbInitializer
                 // Seed Artworks
                 var artworks = new List<Artwork>
                 {
-                    new Artwork { Name = "Art1", Description = "Description of Art1", Price = 100.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Oil }, ArtType = ArtType.Painting },
-                    new Artwork { Name = "Art2", Description = "Description of Art2", Price = 150.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Acrylic }, ArtType = ArtType.Wall_Hanging },
-                    new Artwork { Name = "Art3", Description = "Description of Art3", Price = 120.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Oil }, ArtType = ArtType.Painting },
-                    new Artwork { Name = "Art4", Description = "Description of Art4", Price = 160.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Acrylic }, ArtType = ArtType.Wall_Hanging },
-                    new Artwork { Name = "Art5", Description = "Description of Art5", Price = 110.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Oil }, ArtType = ArtType.Painting },
-                    new Artwork { Name = "Art6", Description = "Description of Art6", Price = 155.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Acrylic }, ArtType = ArtType.Wall_Hanging }
+                    new Artwork { ArtworkName = "Art1", Description = "Description of Art1", Price = 100.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Oil }, ArtType = ArtType.Painting },
+                    new Artwork { ArtworkName = "Art2", Description = "Description of Art2", Price = 150.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Acrylic }, ArtType = ArtType.Wall_Hanging },
+                    new Artwork { ArtworkName = "Art3", Description = "Description of Art3", Price = 120.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Oil }, ArtType = ArtType.Painting },
+                    new Artwork { ArtworkName = "Art4", Description = "Description of Art4", Price = 160.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Acrylic }, ArtType = ArtType.Wall_Hanging },
+                    new Artwork { ArtworkName = "Art5", Description = "Description of Art5", Price = 110.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Oil }, ArtType = ArtType.Painting },
+                    new Artwork { ArtworkName = "Art6", Description = "Description of Art6", Price = 155.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Acrylic }, ArtType = ArtType.Wall_Hanging }
                 };
 
                 context.Artworks.AddRange(artworks);
@@ -69,9 +69,9 @@ public class AppDbInitializer
                 {
                     var artist1Artworks = new List<Artwork>
                     {
-                        context.Artworks.FirstOrDefault(a => a.Name == "Art1"),
-                        context.Artworks.FirstOrDefault(a => a.Name == "Art2"),
-                        context.Artworks.FirstOrDefault(a => a.Name == "Art3")
+                        context.Artworks.FirstOrDefault(a => a.ArtworkName == "Art1"),
+                        context.Artworks.FirstOrDefault(a => a.ArtworkName == "Art2"),
+                        context.Artworks.FirstOrDefault(a => a.ArtworkName == "Art3")
                     };
                     foreach (var artwork in artist1Artworks.Where(a => a != null))
                     {
@@ -83,9 +83,9 @@ public class AppDbInitializer
                 {
                     var artist2Artworks = new List<Artwork>
                     {
-                        context.Artworks.FirstOrDefault(a => a.Name == "Art4"),
-                        context.Artworks.FirstOrDefault(a => a.Name == "Art5"),
-                        context.Artworks.FirstOrDefault(a => a.Name == "Art6")
+                        context.Artworks.FirstOrDefault(a => a.ArtworkName == "Art4"),
+                        context.Artworks.FirstOrDefault(a => a.ArtworkName == "Art5"),
+                        context.Artworks.FirstOrDefault(a => a.ArtworkName == "Art6")
                     };
                     foreach (var artwork in artist2Artworks.Where(a => a != null))
                     {
