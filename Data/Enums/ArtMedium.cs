@@ -11,5 +11,6 @@
         Acrylic,
         Watercolor,
         Oil,
+        Other,
     }
 }

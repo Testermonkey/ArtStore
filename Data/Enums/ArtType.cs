@@ -8,6 +8,7 @@
         Sculpture,
         Furnature,
         Painting,
+        Carving,
 
     }
 }
