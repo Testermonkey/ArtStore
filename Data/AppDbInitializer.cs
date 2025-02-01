@@ -1,88 +1,101 @@
-﻿using ArtStore.Models;
+﻿using ArtStore.Data;
 using ArtStore.Data.Enums;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
-using System.Linq;
+using ArtStore.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace ArtStore.Data
+public class AppDbInitializer
 {
-    public class AppDbInitializer
+    public static void Seed(IApplicationBuilder applicationBuilder)
     {
-        public static void Seed(IApplicationBuilder applicationBuilder)
+        using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
         {
-            using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+            var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            // Seed Artists if they don't already exist
+            if (!context.Artists.Any())
             {
-                var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
-
-                context.Database.EnsureCreated();
-
-                // List of artists and their details
-                var artists = new List<(string FirstName, string LastName, string ArtistName, string Address1, string Address2, string City, string State, string PostalCode, string PhoneNumber, string Biography, string BioPictureUrl)>
+                var artists = new List<Artist>
                 {
-                    ("Leann", "Underwood", "Arden Art", "456 Art Ave.", "Suite 5D", "Creative City", "NY", "54321", "987-654-3210", "An Encaustic artist with a focus on modern shapes and colors.", "http://example.com/leannbio.jpg"),
-                    ("John", "Doe", "John Doe Art", "789 Creative Rd.", "Studio 3", "Artville", "CA", "90210", "123-555-9876", "Acrylic artist specializing in surreal landscapes.", "http://example.com/johndoebio.jpg"),
-                    ("Emily", "Smith", "E. Smith Creations", "321 Ocean Blvd.", "Apt 2A", "Sunny Beach", "FL", "33111", "555-123-4567", "Mixed media artist exploring the concept of time and change.", "http://example.com/emilysmithbio.jpg"),
-                    ("David", "Jones", "D. Jones Sculpture", "987 Sculptor St.", "Floor 4", "Metal City", "TX", "75001", "888-999-4444", "Sculptor who blends modernism with classical techniques.", "http://example.com/davidjonesbio.jpg"),
-                    ("Olivia", "Brown", "Olivia's Canvas", "123 Artistry Ln.", "Suite 7", "Artist Town", "WA", "98001", "111-222-3333", "Watercolor artist known for delicate and ethereal designs.", "http://example.com/oliviabrownbio.jpg"),
-                    ("Mark", "Taylor", "Mark's Masterpieces", "555 Gallery St.", "Unit 9", "Creative Bay", "OR", "97001", "555-777-8888", "Abstract painter with a passion for bold, expressive color.", "http://example.com/marktaylorbio.jpg")
+                    new Artist
+                    {
+                        FirstName = "John",
+                        LastName = "Doe",
+                        ArtistName = "John Doe Art",
+                        Address1 = "123 Art St",
+                        City = "Art City",
+                        State = "Art State",
+                        PostalCode = "12345",
+                        PhoneNumber = "123-456-7890",
+                        Biography = "A brief biography of John Doe.",
+                        BioPictureURL = "https://some-url-to-picture.com/john_doe.jpg"
+                    },
+                    new Artist
+                    {
+                        FirstName = "Jane",
+                        LastName = "Smith",
+                        ArtistName = "Jane Smith Art",
+                        Address1 = "456 Art Ave",
+                        City = "Art Town",
+                        State = "Art State",
+                        PostalCode = "67890",
+                        PhoneNumber = "987-654-3210",
+                        Biography = "A brief biography of Jane Smith.",
+                        BioPictureURL = "https://some-url-to-picture.com/jane_smith.jpg"
+                    }
                 };
 
-                // Loop through the artists and add them if they don't already exist
-                foreach (var artistDetails in artists)
+                context.Artists.AddRange(artists);
+                context.SaveChanges(); // Save artists to get their IDs
+
+                // Seed Artworks
+                var artworks = new List<Artwork>
                 {
-                    if (!context.Artists.Any(a => a.ArtistName == artistDetails.ArtistName || (a.FirstName == artistDetails.FirstName && a.LastName == artistDetails.LastName)))
+                    new Artwork { Name = "Art1", Description = "Description of Art1", Price = 100.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Oil }, ArtType = ArtType.Painting },
+                    new Artwork { Name = "Art2", Description = "Description of Art2", Price = 150.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Acrylic }, ArtType = ArtType.Wall_Hanging },
+                    new Artwork { Name = "Art3", Description = "Description of Art3", Price = 120.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Oil }, ArtType = ArtType.Painting },
+                    new Artwork { Name = "Art4", Description = "Description of Art4", Price = 160.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Acrylic }, ArtType = ArtType.Wall_Hanging },
+                    new Artwork { Name = "Art5", Description = "Description of Art5", Price = 110.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Oil }, ArtType = ArtType.Painting },
+                    new Artwork { Name = "Art6", Description = "Description of Art6", Price = 155.00m, ArtMediums = new List<ArtMedium> { ArtMedium.Acrylic }, ArtType = ArtType.Wall_Hanging }
+                };
+
+                context.Artworks.AddRange(artworks);
+                context.SaveChanges(); // Save artworks to get their IDs
+
+                // Now associate Artworks with Artists
+                var artist1 = context.Artists.FirstOrDefault(a => a.ArtistName == "John Doe Art");
+                var artist2 = context.Artists.FirstOrDefault(a => a.ArtistName == "Jane Smith Art");
+
+                if (artist1 != null)
+                {
+                    var artist1Artworks = new List<Artwork>
                     {
-                        context.Artists.Add(new Artist()
-                        {
-                            FirstName = artistDetails.FirstName,
-                            LastName = artistDetails.LastName,
-                            ArtistName = artistDetails.ArtistName,
-                            Address1 = artistDetails.Address1,
-                            Address2 = artistDetails.Address1,
-                            City = artistDetails.City,
-                            State = artistDetails.State,
-                            PostalCode = artistDetails.PostalCode,
-                            PhoneNumber = artistDetails.PhoneNumber,
-                            Biography = artistDetails.Biography,
-                            BioPictureURL = artistDetails.BioPictureUrl
-                        });
-                        context.SaveChanges();  // Save to get ArtistId
-                    }
-
-                    // Get the artist to add artworks
-                    var artist = context.Artists.FirstOrDefault(a => a.ArtistName == artistDetails.ArtistName);
-
-                    if (artist != null)
+                        context.Artworks.FirstOrDefault(a => a.Name == "Art1"),
+                        context.Artworks.FirstOrDefault(a => a.Name == "Art2"),
+                        context.Artworks.FirstOrDefault(a => a.Name == "Art3")
+                    };
+                    foreach (var artwork in artist1Artworks.Where(a => a != null))
                     {
-                        // Define artworks for each artist
-                        var artworks = new List<(string Name, string Description, decimal Price, ArtMedium Medium, ArtType Type)>
-                        {
-                            ("Surreal Dreamscape", "Acrylic painting with surreal elements", 200.00M, ArtMedium.Acrylic, ArtType.Wall_Hanging),
-                            ("Evolving Time", "Mixed media artwork showing the passage of time", 180.00M, ArtMedium.Paper, ArtType.Wall_Hanging),
-                            ("Modern Elegance", "Sculpture combining classical and modern styles", 250.00M, ArtMedium.Metal, ArtType.Sculpture),
-                            ("Soft Whispers", "Watercolor painting with an ethereal feel", 100.00M, ArtMedium.Watercolor, ArtType.Wall_Hanging),
-                            ("Timeless Beauty", "Abstract expressionist painting depicting nature", 220.00M, ArtMedium.Oil, ArtType.Wall_Hanging)
-                        };
-
-                        // Loop through the artworks list and associate them with the artist
-                        foreach (var artwork in artworks)
-                        {
-                            context.Artworks.Add(new Artwork()
-                            {
-                                Name = artwork.Name,
-                                Description = artwork.Description,
-                                Price = artwork.Price,
-                                ArtMediums = new List<ArtMedium> { artwork.Medium },
-                                ArtType = artwork.Type,
-                                ArtistId = artist.Id  // Link the artwork to the artist using ArtistId
-                            });
-                        }
+                        context.Artist_Artworks.Add(new Artist_Artwork { ArtistId = artist1.Id, ArtworkId = artwork.Id });
                     }
                 }
 
-                context.SaveChanges(); // Persist changes to the database
+                if (artist2 != null)
+                {
+                    var artist2Artworks = new List<Artwork>
+                    {
+                        context.Artworks.FirstOrDefault(a => a.Name == "Art4"),
+                        context.Artworks.FirstOrDefault(a => a.Name == "Art5"),
+                        context.Artworks.FirstOrDefault(a => a.Name == "Art6")
+                    };
+                    foreach (var artwork in artist2Artworks.Where(a => a != null))
+                    {
+                        context.Artist_Artworks.Add(new Artist_Artwork { ArtistId = artist2.Id, ArtworkId = artwork.Id });
+                    }
+                }
+
+                context.SaveChanges();
             }
         }
     }
 }
+

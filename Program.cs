@@ -1,16 +1,5 @@
 using ArtStore.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 
 namespace ArtStore
 {
@@ -21,7 +10,8 @@ namespace ArtStore
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
@@ -44,9 +34,17 @@ namespace ArtStore
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+            // **Ensure database is seeded in Development only**
+            if (app.Environment.IsDevelopment())
+            {
+                using (var scope = app.Services.CreateScope())
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>(); // Get the AppDbContext
+                    AppDbInitializer.Seed(app); // Call the seed method for initialization
+                }
+            }
+
             app.Run();
         }
     }
 }
-
-

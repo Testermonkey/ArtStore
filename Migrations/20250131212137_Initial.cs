@@ -18,6 +18,7 @@ namespace ArtStore.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ArtistName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address1 = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address2 = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -42,18 +43,11 @@ namespace ArtStore.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ArtMediums = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ArtType = table.Column<int>(type: "int", nullable: true),
-                    ArtistId = table.Column<int>(type: "int", nullable: false)
+                    ArtType = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Artworks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Artworks_Artists_ArtistId",
-                        column: x => x.ArtistId,
-                        principalTable: "Artists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,11 +78,6 @@ namespace ArtStore.Migrations
                 name: "IX_Artist_Artworks_ArtworkId",
                 table: "Artist_Artworks",
                 column: "ArtworkId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Artworks_ArtistId",
-                table: "Artworks",
-                column: "ArtistId");
         }
 
         /// <inheritdoc />
@@ -98,10 +87,10 @@ namespace ArtStore.Migrations
                 name: "Artist_Artworks");
 
             migrationBuilder.DropTable(
-                name: "Artworks");
+                name: "Artists");
 
             migrationBuilder.DropTable(
-                name: "Artists");
+                name: "Artworks");
         }
     }
 }

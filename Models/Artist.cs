@@ -21,7 +21,7 @@ namespace ArtStore.Models
         public string BioPictureURL { get; set; } = string.Empty;
 
         // Relationships
-        public List<Artist_Artwork> Artist_Artworks { get; set; } = new List<Artist_Artwork>();
+        public List<Artist_Artwork> Artist_Artworks { get; set; }
 
     }
 }

@@ -15,9 +15,5 @@ namespace ArtStore.Models
 
         // Relationships
         public List<Artist_Artwork> Artist_Artworks { get; set; } = new List<Artist_Artwork>();
-
-        
-        public int ArtistId { get; set; }
-        public Artist? Artist { get; set; }
     }
 }

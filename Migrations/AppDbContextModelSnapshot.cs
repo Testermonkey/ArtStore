@@ -37,6 +37,10 @@ namespace ArtStore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ArtistName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("BioPictureURL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -104,9 +108,6 @@ namespace ArtStore.Migrations
                     b.Property<int?>("ArtType")
                         .HasColumnType("int");
 
-                    b.Property<int>("ArtistId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -119,8 +120,6 @@ namespace ArtStore.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ArtistId");
 
                     b.ToTable("Artworks");
                 });
@@ -142,17 +141,6 @@ namespace ArtStore.Migrations
                     b.Navigation("Artist");
 
                     b.Navigation("Artwork");
-                });
-
-            modelBuilder.Entity("ArtStore.Models.Artwork", b =>
-                {
-                    b.HasOne("ArtStore.Models.Artist", "Artist")
-                        .WithMany()
-                        .HasForeignKey("ArtistId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Artist");
                 });
 
             modelBuilder.Entity("ArtStore.Models.Artist", b =>

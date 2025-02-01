@@ -7,6 +7,7 @@
         Vessel,
         Sculpture,
         Furnature,
+        Painting,
 
     }
 }
