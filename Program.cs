@@ -1,4 +1,5 @@
 using ArtStore.Data;
+using ArtStore.Data.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArtStore
@@ -12,6 +13,8 @@ namespace ArtStore
             // Add services to the container.
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+            builder.Services.AddScoped<IArtistsService, ArtistsServices>();
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();

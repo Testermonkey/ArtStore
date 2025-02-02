@@ -1,4 +1,5 @@
 ﻿using ArtStore.Data;
+using ArtStore.Data.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,16 +10,16 @@ namespace ArtStore.Controllers
 {
     public class ArtistsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IArtistsService _service;
 
-        public ArtistsController(AppDbContext context)
+        public ArtistsController(IArtistsService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var data = _context.Artists.ToList();
+            var data = await _service.GetAllArtists();
             return View(data);
         }
     }
