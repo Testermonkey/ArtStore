@@ -1,0 +1,80 @@
+﻿@model Artist
+
+@{
+    ViewData["Title"] = "Add Artist";
+}
+
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Add new artist</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group text-center">
+                        <img id="BioPicturePreview" class="border-info rounded-circle" style="max-width: 150px" src="https://via.placeholder.com/150" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BioPictureURL" class="control-label"></label>
+                        <input asp-for="BioPictureURL" class="form-control" id="BioPictureURL" />
+                        <span asp-validation-for="BioPictureURL" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ArtistName" class="control-label"></label>
+                        <input asp-for="ArtistName" class="form-control" />
+                        <span asp-validation-for="ArtistName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Biography" class="control-label"></label>
+                        <input asp-for="Biography" class="form-control" />
+                        <span asp-validation-for="Biography" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-outline-success float-right" />
+                        <a class="btn btn-outline-danger" asp-action="Index">Show All</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var inputField = $("#BioPictureURL");
+            var output = $("#BioPicturePreview");
+
+            function updatePreview() {
+                var url = inputField.val().trim();
+                if (url) {
+                    output.attr("src", url);
+                } else {
+                    output.attr("src", "https://via.placeholder.com/150"); // Placeholder if empty
+                }
+            }
+
+            // Initialize on page load
+            updatePreview();
+
+            // Update on input change
+            inputField.on("input", updatePreview);
+        });
+    </script>
+}

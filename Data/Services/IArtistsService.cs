@@ -4,10 +4,10 @@ namespace ArtStore.Data.Services
 {
     public interface IArtistsService
     {
-        Task<IEnumerable<Artist>> GetAllArtists();
-        Artist GetArtistById(int id);
-        void AddArtist(Artist artist);
-        Artist UpdateArtist(int id, Artist newArtist);
-        void DeleteArtist(int id);
+        Task<IEnumerable<Artist>> GetAllAsync();
+        Artist GetByIdAsync(int id);
+        Task AddAsync(Artist artist);
+        Artist UpdateAsync(int id, Artist newArtist);
+        void Delete(int id);
     }
 }

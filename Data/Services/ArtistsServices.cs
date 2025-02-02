@@ -12,28 +12,29 @@ namespace ArtStore.Data.Services
             _context = context;
         }
 
-        public void AddArtist(Artist artist)
+        public async Task AddAsync(Artist artist)
+        {
+            await _context.Artists.AddAsync(artist);
+            await _context.SaveChangesAsync();
+        }
+
+        public void Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteArtist(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<Artist>> GetAllArtists()
+        public async Task<IEnumerable<Artist>> GetAllAsync()
         {
             var result = await _context.Artists.ToListAsync();
             return result;
         }
 
-        public Artist GetArtistById(int id)
+        public Artist GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Artist UpdateArtist(int id, Artist newArtist)
+        public Artist UpdateAsync(int id, Artist newArtist)
         {
             throw new NotImplementedException();
         }
